@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyBottomNavigationTextStyle" >
+        <item name="android:fontFamily">@font/medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="MyBottomNavigationTextStyleClicked" >
+        <item name="android:fontFamily">@font/medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#FF724C</item>
+        <item name="android:fillColor">#FF724C</item>
+    </style>
+
+</resources>
