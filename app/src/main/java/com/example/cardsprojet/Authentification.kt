@@ -1,10 +1,12 @@
 package com.example.cardsprojet
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import com.google.gson.Gson
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -16,24 +18,27 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 
 class Authentification : AppCompatActivity() {
-    //@SuppressLint("MissingInflatedId")
     override  fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentification)
         val SignInButton = findViewById<Button>(R.id.button2)
 
         SignInButton.setOnClickListener{
-            CoroutineScope(Dispatchers.Main).launch {
+             CoroutineScope(Dispatchers.Main).launch {
                 val username = findViewById<EditText>(R.id.editTextTextEmailAddress)
                 val password = findViewById<EditText>(R.id.editTextTextPassword)
                 val response = verifySignIn(username.text.toString(),password.text.toString()).await()
-                withContext(Dispatchers.Main) {
-// code de la réponse 200
-                        val data = response.toString()
-                        username.setText(data)
 
-                }
-            }
+                    val data = response.toString()
+                    val intent = Intent(this@Authentification, MainActivity::class.java)
+                    intent.putExtra("user", data)
+                    startActivity(intent)
+
+
+             }
+
+
+
         }
     }
 

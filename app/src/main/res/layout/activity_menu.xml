@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".models.MenuData">
+
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.5">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="142dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/aaa" />
+
+
+  </RelativeLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="100dp"
+      android:background="@drawable/top_rounded_corner_background"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:elevation="8dp"
+      android:gravity="center_horizontal"
+      android:outlineProvider="bounds"
+      android:scrollbarStyle="insideOverlay"
+      android:scrollbars="vertical"
+      app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="199dp">
+
+      <TextView
+          android:id="@+id/menu_list_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="24dp"
+          android:fontFamily="@font/bold"
+          android:text="@string/taj_mahal"
+          android:textColor="#2A2C41"
+          android:textSize="20sp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.498"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <RatingBar
+          android:id="@+id/Rating_menu"
+          style="@android:style/Widget.DeviceDefault.RatingBar.Small"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:max="5"
+          android:scaleX="1.2"
+          android:scaleY="1.2"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/cuis_type" />
+
+      <TextView
+          android:id="@+id/cuis_type"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:fontFamily="@font/regular"
+          android:text="@string/cuisine_type"
+          android:textColor="#2A2C41"
+          android:textSize="13sp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/menu_list_text" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_menu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+    </FrameLayout>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,17 +2,18 @@ package com.example.cardsprojet
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cardsprojet.databinding.LayoutRestoListItemBinding
 import com.example.cardsprojet.models.Restaurant
-
-class MyAdapter(val data: List<Restaurant>):RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+import com.example.cardsprojet.Menu
+import kotlinx.coroutines.withContext
+class MyAdapter(val data: List<Restaurant>,private val context: Context):RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
 
 
@@ -73,6 +74,17 @@ class MyAdapter(val data: List<Restaurant>):RecyclerView.Adapter<MyAdapter.MyVie
                 context.startActivity(intent)
 
             }
+
+            holder.binding.restoCard.setOnClickListener{
+                val id_resto = data[position].id_resto
+                val intent = Intent(context, Menu::class.java)
+                intent.putExtra("id_resto",id_resto)
+                intent.putExtra("nom_resto",data[position].name)
+                intent.putExtra("type_resto",data[position].type_resto.nom)
+                intent.putExtra("rating_resto",4)
+
+                it.context.startActivity(intent)
+            }
         }
 
 
@@ -82,9 +94,11 @@ class MyAdapter(val data: List<Restaurant>):RecyclerView.Adapter<MyAdapter.MyVie
 
 
 
+
     class MyViewHolder(val binding: LayoutRestoListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
 }
+
 
 
 

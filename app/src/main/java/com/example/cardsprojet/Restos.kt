@@ -9,7 +9,6 @@ import android.widget.ProgressBar
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cardsprojet.databinding.ActivityMainBinding
 import com.example.cardsprojet.models.Restaurant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -42,14 +41,14 @@ class Restos : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
         val layoutManager = LinearLayoutManager(context)
-        recyclerView = requireView().findViewById(R.id.recyclerView)
+        recyclerView = requireView().findViewById(R.id.recyclerViewResto)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
         lifecycleScope.launch {
             val restaurants = loadData().await()
             val progressBar: ProgressBar = view.findViewById(R.id.progressBarResto)
             progressBar.visibility = View.VISIBLE // Affiche la ProgressBar initialement
-            recyclerView.adapter = MyAdapter(restaurants)
+            recyclerView.adapter = context?.let { MyAdapter(restaurants, it) }
             progressBar.visibility = View.GONE // Affiche la ProgressBar initialement
         }
     }
