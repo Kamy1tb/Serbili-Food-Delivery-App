@@ -1,6 +1,7 @@
 package com.example.cardsprojet
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.cardsprojet.databinding.LayoutRestoListItemBinding
 import com.example.cardsprojet.models.Restaurant
 import com.example.cardsprojet.Menu
@@ -33,6 +35,7 @@ class MyAdapter(val data: List<Restaurant>,private val context: Context):Recycle
             Rating.rating= data[position].rating.toFloat()
             Adress.text=data[position].location
             logo.setImageResource(R.drawable.resto)
+            Glide.with(context).load(data[position].image).into(logo)
 
             mapsPhoto.setOnClickListener {
                 val latitude = data[position].latitude  // Latitude de la position à afficher
@@ -82,14 +85,18 @@ class MyAdapter(val data: List<Restaurant>,private val context: Context):Recycle
                 intent.putExtra("nom_resto",data[position].name)
                 intent.putExtra("type_resto",data[position].type_resto.nom)
                 intent.putExtra("rating_resto",4)
+                intent.putExtra("image_resto",data[position].image)
 
                 it.context.startActivity(intent)
             }
+
+
         }
 
 
 
     }
+
 
 
 

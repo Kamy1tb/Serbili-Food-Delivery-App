@@ -15,6 +15,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import android.widget.Toast
 
 
 class Restos : Fragment() {
@@ -46,6 +47,7 @@ class Restos : Fragment() {
         recyclerView.setHasFixedSize(true)
         lifecycleScope.launch {
             val restaurants = loadData().await()
+
             val progressBar: ProgressBar = view.findViewById(R.id.progressBarResto)
             progressBar.visibility = View.VISIBLE // Affiche la ProgressBar initialement
             recyclerView.adapter = context?.let { MyAdapter(restaurants, it) }

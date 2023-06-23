@@ -3,8 +3,10 @@ package com.example.cardsprojet
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +19,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
 
+
+
 class Authentification : AppCompatActivity() {
     override  fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,25 +28,25 @@ class Authentification : AppCompatActivity() {
         val SignInButton = findViewById<Button>(R.id.button2)
 
         SignInButton.setOnClickListener{
-             CoroutineScope(Dispatchers.Main).launch {
+            val context = this@Authentification
+            CoroutineScope(Dispatchers.Main).launch {
                 val username = findViewById<EditText>(R.id.editTextTextEmailAddress)
                 val password = findViewById<EditText>(R.id.editTextTextPassword)
-                val response = verifySignIn(username.text.toString(),password.text.toString()).await()
-
-                    val data = response.toString()
-                    val intent = Intent(this@Authentification, MainActivity::class.java)
-                    intent.putExtra("user", data)
-                    startActivity(intent)
-
-
-             }
-
-
-
+                val response = verifySignIn(username.text.toString(), password.text.toString()).await()
+                val data = response.toString()
+                val message = data
+                val tag = "MineTaghh"
+                Log.d(tag, message)
+                val intent = Intent(context, MainActivity::class.java)
+                intent.putExtra("user", data)
+               // startActivity(intent)
+            }
         }
     }
 
-    private fun verifySignIn(username:String,password: String) =
+
+
+    private suspend fun verifySignIn(username:String,password: String) =
         CoroutineScope(Dispatchers.IO).async {
             val jsonData = mapOf(
                 "username" to username,

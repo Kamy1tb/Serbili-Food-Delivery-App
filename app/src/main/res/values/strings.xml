@@ -8,4 +8,6 @@
     <string name="sign_in">Sign In</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pizza_napolitano">Pizza Napolitano</string>
+    <string name="_500_da">500 DA</string>
 </resources>
