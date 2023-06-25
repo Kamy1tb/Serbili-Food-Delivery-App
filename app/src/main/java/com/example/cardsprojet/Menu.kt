@@ -33,7 +33,11 @@ class Menu : AppCompatActivity() {
         Cuisine_type.text = "Cuisine type : "+val_type
         nom.text = val_nom
         rating.rating = val_rating.toFloat()
-        replaceFragment(MenuFragment())
+        val bundle = Bundle()
+        bundle.putInt("id_resto", restaurantId)
+        val fragment = MenuFragment()
+        fragment.arguments = bundle
+        replaceFragment(fragment)
 
         }
     private fun replaceFragment(homeFragment : Fragment){

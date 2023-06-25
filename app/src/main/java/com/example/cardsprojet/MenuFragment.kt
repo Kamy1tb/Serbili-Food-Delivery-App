@@ -1,6 +1,7 @@
 package com.example.cardsprojet
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -71,12 +72,13 @@ class MenuFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
         lifecycleScope.launch {
-            val menus = loadData(2).await()
+
+            val menus = arguments?.let { loadData(it.getInt("id_resto")).await() }
             val progressBar: ProgressBar = view.findViewById(R.id.progressBarMenu)
             val panier: View = view.findViewById(R.id.cartview)
             panier.visibility = View.GONE
             progressBar.visibility = View.VISIBLE // Affiche la ProgressBar initialement
-            recyclerView.adapter = context?.let { MyAdapterMenu(it, menus) }
+            recyclerView.adapter = context?.let { menus?.let { it1 -> MyAdapterMenu(it, it1) } }
             progressBar.visibility = View.GONE
             recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
                 @SuppressLint("MissingInflatedId", "SetTextI18n")
@@ -86,7 +88,7 @@ class MenuFragment : Fragment() {
                         val position = childView?.let { rv.getChildAdapterPosition(it) }
                         position?.let {
                             val adapter = recyclerView.adapter
-                            val item = menus[position]
+                            val item = menus?.get(position)
                             val bottomSheetDialog = BottomSheetDialog(requireContext())
                             val view = layoutInflater.inflate(R.layout.add_card_layout, null)
                             val textView1 = view.findViewById<TextView>(R.id.menu_cart_name)
@@ -95,21 +97,23 @@ class MenuFragment : Fragment() {
                             val plus = view.findViewById<Button>(R.id.buttonplus)
                             val moins = view.findViewById<Button>(R.id.buttonmoins)
                             val valider = view.findViewById<Button>(R.id.valider)
-                            textView1.text = item.nom
+
+                            textView1.text = item!!.nom
                             textView2.text = item.prix.toString()+" DA"
+
                             plus.setOnClickListener{
                                 textView3.text = (textView3.text.toString().toInt()+1).toString()
-                                textView2.text = (textView2.text.toString().replace(Regex("[^0-9]"), "").toInt() + item.prix).toString()+" DA"
+                                textView2.text = (textView2.text.toString().replace(Regex("[^0-9]"), "").toInt() + item!!.prix).toString()+" DA"
                             }
                             moins.setOnClickListener{
                                 if (textView3.text.toString().toInt() > 1){
                                     textView3.text = (textView3.text.toString().toInt()-1).toString()
-                                    textView2.text = (textView2.text.toString().replace(Regex("[^0-9]"), "").toInt() - item.prix).toString()+" DA"
+                                    textView2.text = (textView2.text.toString().replace(Regex("[^0-9]"), "").toInt() - item!!.prix).toString()+" DA"
                                 }
 
                             }
                             valider.setOnClickListener{
-                                WriteData(item.id_menu,item.nom,textView3.text.toString().toInt(),item.prix.toFloat(),item.image)
+                                item?.let { it1 -> WriteData(it1.id_menu,item.nom,textView3.text.toString().toInt(),item.prix.toFloat(),item.image) }
                                 Toast.makeText(requireContext(),"Successfully added to cart",Toast.LENGTH_SHORT).show()
                                 updatePanier()
                                 panier.visibility = View.VISIBLE
@@ -118,10 +122,27 @@ class MenuFragment : Fragment() {
                             }
 
                             panier.setOnClickListener{
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    //Toast.makeText(this@MainActivity,verifyCache().await().toString(),Toast.LENGTH_LONG).show()
+                                    if (verifyCache().await().toInt() == 0) {
+                                        val intent = Intent(requireContext(), Authentification::class.java)
+                                        startActivity(intent)
+                                    }
+                                    else{
+                                        val fragment = PanierFragment()
+                                        val bundle = Bundle()
+                                        arguments?.let { it1 ->
+                                            bundle.putInt("id_resto",
+                                                it1.getInt("id_resto"))
+                                        }
+                                        fragment.arguments = bundle
+                                        val transaction = fragmentManager?.beginTransaction()
+                                        transaction?.replace(R.id.navigation,fragment)?.commit()
 
-                                val fragment = PanierFragment()
-                                val transaction = fragmentManager?.beginTransaction()
-                                transaction?.replace(R.id.navigation,fragment)?.commit()
+                                    }
+                                }
+
+
 
                             }
 
@@ -152,13 +173,6 @@ class MenuFragment : Fragment() {
     }
 
 
-    private fun navigateToNextFragment() {
-        // Obtenez le NavController à partir de l'activité hôte
-
-
-        // Effectuez la navigation vers le prochain fragment en utilisant l'action appropriée
-
-    }
 
 
     private fun loadData(id_resto: Int): Deferred<List<MenuData>> = CoroutineScope(Dispatchers.IO).async {
@@ -177,7 +191,7 @@ class MenuFragment : Fragment() {
             // Opération d'insertion dans la base de données
             database.commandDao().insert(commande)
             val all = database.commandDao().getAll()
-            Log.d("listehh",all.toString())
+
 
         }
 
@@ -197,7 +211,6 @@ class MenuFragment : Fragment() {
             // Opération d'insertion dans la base de données
             database.commandDao().deleteAll()
             val all = database.commandDao().getCount()
-            Log.d("listehh", all.toString())
             callback(all) // Appeler le rappel avec la valeur obtenue
         }
     }
@@ -216,6 +229,11 @@ class MenuFragment : Fragment() {
 
         }
     }
+
+    private suspend fun verifyCache()=
+        CoroutineScope(Dispatchers.IO).async {
+            database.userDao().verifyLogged()
+        }
 
 
 

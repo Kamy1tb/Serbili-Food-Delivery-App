@@ -5,12 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.cardsprojet.models.CommandeIT
+import com.example.cardsprojet.models.UserIT
 
-@Database(entities = [CommandeIT::class], version = 1)
+@Database(entities = [CommandeIT::class,UserIT::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun commandDao(): CommandDao
-
+    abstract fun userDao(): UserDao
     companion object{
         @Volatile
         private var INSTANCE : AppDatabase? = null
@@ -23,7 +24,7 @@ abstract class AppDatabase: RoomDatabase() {
             }
             synchronized(this){
                 val instance = Room.databaseBuilder(context.applicationContext,
-                    AppDatabase::class.java,"serbili_cache").build()
+                    AppDatabase::class.java,"serbili").build()
                 INSTANCE = instance
                 return instance
             }

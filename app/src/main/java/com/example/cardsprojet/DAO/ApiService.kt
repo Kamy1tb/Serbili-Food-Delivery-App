@@ -14,5 +14,7 @@ interface ApiService {
     suspend fun signIn(@Body login : Map<String,String>):Response<User>
     @GET("menuByID")
     suspend fun menuByID(@Query("id_resto") restaurantId: Int):Response<List<MenuData>>
+    @POST("signup")
+    suspend fun signUp(@Body signup : Map<String,String>):Response<User>
 
 }

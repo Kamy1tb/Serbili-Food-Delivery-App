@@ -7,8 +7,13 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.cardsprojet.DAO.ApiClient
+import com.example.cardsprojet.databinding.ActivityAuthentificationBinding
+import com.example.cardsprojet.databinding.ActivityMainBinding
+import com.example.cardsprojet.models.User
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -18,9 +23,13 @@ import org.json.JSONObject
 
 
 class Authentification : AppCompatActivity() {
+    lateinit var binding: ActivityAuthentificationBinding
     override  fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_authentification)
+        binding = ActivityAuthentificationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        replaceFragment(AuthentificationFragment())
+        /*setContentView(R.layout.activity_authentification)
         val SignInButton = findViewById<Button>(R.id.button2)
 
         SignInButton.setOnClickListener{
@@ -43,34 +52,17 @@ class Authentification : AppCompatActivity() {
                 }
 
             }
-        }
+        }*/
     }
 
 
+    private fun replaceFragment(homeFragment : Fragment){
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_authentif,homeFragment)
+        fragmentTransaction.commit()
+    }
 
-    private suspend fun verifySignIn(username:String,password: String) =
-        CoroutineScope(Dispatchers.IO).async {
-            val jsonData = mapOf(
-                "username" to username,
-                "password" to password
-            )
-            try{
-                val response = ApiClient.apiService.signIn(jsonData)
-                if (response.isSuccessful) {
-                    response.body()
-                } else {
-                    val errorResponse = response.errorBody()?.string()
-                    val errorJson = JSONObject(errorResponse)
-                    val errorMessage = errorJson.getString("detail")
-                    errorMessage
-                }
-
-            } catch (e : Exception){
-                e.printStackTrace()
-            }
-
-
-        }
 
     fun createPartFromString(username: String,password: String): MultipartBody {
         return MultipartBody.Builder()

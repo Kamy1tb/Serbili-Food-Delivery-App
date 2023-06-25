@@ -81,7 +81,7 @@ class MyAdapter(val data: List<Restaurant>,private val context: Context):Recycle
             holder.binding.restoCard.setOnClickListener{
                 val id_resto = data[position].id_resto
                 val intent = Intent(context, Menu::class.java)
-                intent.putExtra("id_resto",id_resto)
+                intent.putExtra("restaurantId",id_resto)
                 intent.putExtra("nom_resto",data[position].name)
                 intent.putExtra("type_resto",data[position].type_resto.nom)
                 intent.putExtra("rating_resto",data[position].rating_restaurant)
