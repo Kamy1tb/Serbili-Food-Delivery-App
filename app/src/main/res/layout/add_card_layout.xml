@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/bottom_nav_background"
+    android:elevation="20dp"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:backgroundTint="#00000000"
+        >
+
+        <TextView
+            android:id="@+id/menu_cart_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/medium"
+            android:text="@string/pizza_napolitano"
+            android:textColor="#2A2C41"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/prix_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/semibold"
+            android:text="@string/_500_da"
+            android:textColor="#FF543E"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menu_cart_name" />
+
+        <TextView
+            android:id="@+id/nombremenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/semibold"
+            android:text="1"
+            android:textColor="#2A2C41"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonplus"
+            app:layout_constraintStart_toEndOf="@+id/buttonmoins"
+            app:layout_constraintTop_toBottomOf="@+id/prix_menu" />
+
+        <Button
+            android:id="@+id/buttonmoins"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:width="50dp"
+            android:height="50dp"
+            android:background="@drawable/bg_button_plus"
+            android:text="-"
+            android:textColor="#FDBF50"
+            app:layout_constraintEnd_toStartOf="@+id/nombremenu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prix_menu" />
+
+        <Button
+            android:id="@+id/buttonplus"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:text="+"
+            android:textColor="#FDBF50"
+            android:background="@drawable/bg_button_plus"
+            app:layout_constraintStart_toEndOf="@+id/nombremenu"
+            app:layout_constraintTop_toTopOf="@+id/buttonmoins" />
+
+
+        <Button
+            android:id="@+id/valider"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/boutton_bg"
+            android:elevation="8dp"
+            android:fontFamily="@font/medium"
+            android:padding="-45dp"
+            android:text="Ajouter au Panier"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonplus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/buttonplus"
+            app:layout_constraintTop_toTopOf="@+id/buttonplus" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

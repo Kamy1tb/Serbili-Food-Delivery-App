@@ -1,6 +1,7 @@
 package com.example.cardsprojet
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,21 +10,26 @@ import android.widget.ProgressBar
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cardsprojet.DAO.ApiClient
+import com.example.cardsprojet.DAO.AppDatabase
 import com.example.cardsprojet.models.Restaurant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import android.widget.Toast
+import com.example.cardsprojet.adapters.MyAdapter
+import kotlinx.coroutines.GlobalScope
 
 
 class Restos : Fragment() {
 
     lateinit var recyclerView : RecyclerView
+    lateinit var database: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        database = AppDatabase.getDatabase(requireContext())
 
 
 
@@ -45,6 +51,7 @@ class Restos : Fragment() {
         recyclerView = requireView().findViewById(R.id.recyclerViewResto)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
+        viderPanier()
         lifecycleScope.launch {
             val restaurants = loadData().await()
 
@@ -60,9 +67,20 @@ class Restos : Fragment() {
     private fun loadData(): Deferred<List<Restaurant>> = CoroutineScope(Dispatchers.IO).async {
         val response = ApiClient.apiService.getRestaurants()
         if (response.isSuccessful) {
-            response.body() ?: emptyList()
+            val sortedRestaurants = response.body()?.sortedByDescending { it.rating_restaurant}
+            sortedRestaurants ?: emptyList()
         } else {
             emptyList()
+        }
+    }
+
+    private fun viderPanier(){
+        GlobalScope.launch(Dispatchers.IO) {
+            // Opération d'insertion dans la base de données
+            database.commandDao().deleteAll()
+            val all = database.commandDao().getAll()
+            Log.d("listehh",all.toString())
+
         }
     }
 

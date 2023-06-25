@@ -23,7 +23,7 @@ class Menu : AppCompatActivity() {
         val restaurantId = intent.getIntExtra("restaurantId", 0)
         val val_type = intent.getStringExtra("type_resto")
         val val_nom = intent.getStringExtra("nom_resto")
-        val val_rating = intent.getIntExtra("rating_resto",0)
+        val val_rating = intent.getFloatExtra("rating_resto", 0F)
         val val_image = intent.getStringExtra("image_resto")
         val Cuisine_type = findViewById<TextView>(R.id.cuis_type)
         val nom = findViewById<TextView>(R.id.menu_list_text)
@@ -39,7 +39,7 @@ class Menu : AppCompatActivity() {
     private fun replaceFragment(homeFragment : Fragment){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_menu,homeFragment)
+        fragmentTransaction.replace(R.id.navigation,homeFragment)
         fragmentTransaction.commit()
     }
 }

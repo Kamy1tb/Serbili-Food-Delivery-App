@@ -7,16 +7,12 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.google.gson.Gson
-import kotlinx.coroutines.CompletableDeferred
+import com.example.cardsprojet.DAO.ApiClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import org.json.JSONObject
 
 
@@ -37,9 +33,15 @@ class Authentification : AppCompatActivity() {
                 val message = data
                 val tag = "MineTaghh"
                 Log.d(tag, message)
-                val intent = Intent(context, MainActivity::class.java)
-                intent.putExtra("user", data)
-               // startActivity(intent)
+                if (message == "Incorrect username or password"){
+                    Toast.makeText(context,message,Toast.LENGTH_LONG).show()
+                }
+                else{
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.putExtra("user", data)
+                    startActivity(intent)
+                }
+
             }
         }
     }
