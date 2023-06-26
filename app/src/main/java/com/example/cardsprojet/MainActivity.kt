@@ -52,6 +52,24 @@ class MainActivity : AppCompatActivity() {
 
         when(it.itemId){
             R.id.restaurants-> replaceFragment(Restos())
+            R.id.commands-> {
+                CoroutineScope(Dispatchers.Main).launch {
+                    //Toast.makeText(this@MainActivity,verifyCache().await().toString(),Toast.LENGTH_LONG).show()
+                    if (verifyCache().await().toInt() == 0) {
+                        withContext(Dispatchers.Main) {
+                            val intent = Intent(this@MainActivity, Authentification::class.java)
+                            startActivity(intent)
+                        }
+
+                    } else {
+
+                        val fragment = CommandeFragment()
+                        val bundle = Bundle()
+
+                        replaceFragment(fragment)
+                    }
+                }
+            }
             R.id.profil -> {
                 CoroutineScope(Dispatchers.Main).launch {
                     //Toast.makeText(this@MainActivity,verifyCache().await().toString(),Toast.LENGTH_LONG).show()

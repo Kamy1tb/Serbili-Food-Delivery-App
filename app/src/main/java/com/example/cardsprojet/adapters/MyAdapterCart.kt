@@ -2,10 +2,14 @@ package com.example.cardsprojet.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cardsprojet.DAO.AppDatabase
+import com.example.cardsprojet.PanierFragment
 import com.example.cardsprojet.models.CommandeIT
 import com.example.cardsprojet.R
 import com.example.cardsprojet.databinding.CartItemBinding
@@ -14,8 +18,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class MyAdapterCart(val data: ArrayList<CommandeIT>, private val context: Context):RecyclerView.Adapter<MyAdapterCart.MyViewHolder>() {
+class MyAdapterCart(val data: ArrayList<CommandeIT>, private val context: Context,fragment:PanierFragment):RecyclerView.Adapter<MyAdapterCart.MyViewHolder>() {
 
+    private var fragment: PanierFragment? = fragment
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -57,6 +62,7 @@ class MyAdapterCart(val data: ArrayList<CommandeIT>, private val context: Contex
         if (position >= 0 && position < data.size) {
             data.removeAt(position)
             notifyItemRemoved(position)
+
         }
         // Notifier le RecyclerView du changement
 
@@ -67,14 +73,6 @@ class MyAdapterCart(val data: ArrayList<CommandeIT>, private val context: Contex
         database = AppDatabase.getDatabase(context)
         database.commandDao().delete(data)
     }
-
-
-
-
-
-
-
-
 
 
 
